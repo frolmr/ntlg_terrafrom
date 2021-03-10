@@ -68,9 +68,13 @@ data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
 terraform {
-  backend "s3" {
-    bucket = "ntlg-terraform"
-    key    = "ntlg-test/terraform.tfstate"
-    region = "us-west-2"
+  required_version = "~> 0.14"
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "frol"
+
+    workspaces {
+      name = "ntlg_terraform"
+    }
   }
 }
