@@ -20,22 +20,13 @@ data "aws_ami" "ubuntu" {
 
 locals {
   web_instance_type_map = {
-    stage = "t3.micro"
-    prod  = "t3.large"
+    default = "t3.micro"
   }
 }
 
 locals {
   web_instance_count_map = {
-    stage = 1
-    prod  = 2
-  }
-}
-
-locals {
-  instances = {
-    "t3.micro" = data.aws_ami.ubuntu.id
-    "t3.large" = data.aws_ami.ubuntu.id
+    default = 1
   }
 }
 
@@ -44,23 +35,8 @@ resource "aws_instance" "web" {
   instance_type = local.web_instance_type_map[terraform.workspace]
   count         = local.web_instance_count_map[terraform.workspace]
 
-  cpu_core_count       = 1
-  cpu_threads_per_core = 1
-  hibernation          = true
-
   tags = {
     Name = "HelloNetology"
-  }
-}
-
-resource "aws_instance" "web2" {
-  for_each = local.instances
-
-  ami           = each.value
-  instance_type = each.key
-
-  lifecycle {
-    create_before_destroy = true
   }
 }
 

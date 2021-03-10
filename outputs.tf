@@ -14,14 +14,6 @@ output "instance_ip_addr_0" {
   value = aws_instance.web[0].private_ip
 }
 
-output "instance_ip_addr_1" {
-  value = aws_instance.web[1].private_ip
-}
-
 output "subnet_id_0" {
   value = aws_instance.web[0].subnet_id
-}
-
-output "subnet_id_1" {
-  value = aws_instance.web[1].subnet_id
 }
